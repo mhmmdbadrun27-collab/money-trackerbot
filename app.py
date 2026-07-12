@@ -1,22 +1,8 @@
-from flask import Flask
-from telegram import Update
-from telegram.ext import (
-    Application,
-    CommandHandler,
-    MessageHandler,
-    filters
-)
-from config import TOKEN
+import os
+import threading
 
-from handlers import (
-    menu,
-    tambah_pemasukan,
-    tambah_pengeluaran,
-    input_nominal,
-    pilih_kategori,
-    saldo_menu,
-    statistik_menu
-)
+from flask import Flask
+from bot import main
 
 app = Flask(__name__)
 
@@ -25,8 +11,15 @@ def home():
     return "Money Tracker Bot is running!"
 
 if __name__ == "__main__":
+
+    bot_thread = threading.Thread(
+        target=main,
+        daemon=True
+    )
+
+    bot_thread.start()
+
     app.run(
         host="0.0.0.0",
-        port=5000,
-        debug=True
+        port=int(os.environ.get("PORT", 5000))
     )

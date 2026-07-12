@@ -10,6 +10,11 @@ from telegram.ext import (
 
 from config import TOKEN
 
+from telegram_handlers import (
+    start,
+    handle_message
+)
+
 from keyboards import main_keyboard
 
 from handlers import (
@@ -22,60 +27,6 @@ from handlers import (
     saldo_menu
    )
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    await update.message.reply_text(
-
-"""💰 Money Tracker
-
-Selamat datang.
-
-Bot ini membantu mencatat arus keuangan Anda.
-
-Silakan pilih menu di bawah.""",
-
-reply_markup=main_keyboard
-)
-    
-# HANDLE MESSAGE
-
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-      # MENU UTAMA
-    if await menu(update):
-        return
-
-    # TAMBAH PEMASUKAN
-    if await tambah_pemasukan(update):
-        return
-    
-    # TAMBAH PENGELUARAN
-    if await tambah_pengeluaran(update):
-        return
-
-    # INPUT NOMINAL
-    if await input_nominal(update):
-        return
-   
-    # PILIH KATEGORI
-    if await pilih_kategori(update):
-        return
- 
-    # SALDO
-    if await saldo_menu(update):
-        return
-
-    # STATISTIK
-    if await statistik_menu(update):
-        return
-
-    # DEFAULT
-    await update.message.reply_text(
-        "Silakan pilih menu menggunakan tombol di bawah.",
-        reply_markup=main_keyboard
-    )
-
-# MAIN
 
 def main():
 
